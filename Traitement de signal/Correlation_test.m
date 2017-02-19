@@ -2,28 +2,41 @@ clc
 close all
 clear all
 
-n = [0:1:39];
-n2 = [0:1:79];
+n = [0:1:7];
 seuil_bas = 0.7;
 seuil_haut = 2-seuil_bas;
-x = [sin(n*pi/20) zeros(1,40)];
-y = [zeros(1,20) 0.7*sin(n*pi/20) zeros(1,20)];
+x = [1 1.5 2 0 -1 -1 2];
+y = sin(n*pi/3.5);
 
-correlation_ref_bas = xcorr(x,seuil_bas*x);
-correlation_ref_haut = xcorr(x,seuil_haut*x);
 correlation2 = xcorr(x,y);
+correlation_original = xcorr(x,x);
 
-c_bas = sum(abs(correlation_ref_bas))
-c_haut = sum(abs(correlation_ref_haut))
-c = sum(abs(correlation2))
+n = 0:1:length(correlation2)-1;
 
-if c > c_bas && c < c_haut
+c = max(correlation2)
+c_original = max(correlation_original);
+
+pourcentage_corr = c/c_original;
+
+if pourcentage_corr > seuil_bas && pourcentage_corr < seuil_haut
     bon_sort = 1;
 else
     bon_sort = 0;
 end
 
 figure()
-plot(n2,x);
+stem(n,correlation2);
+
+figure()
+plot(0:1:length(x)-1,x)
 hold on
-plot(n2,y);
+plot(0:1:length(y)-1,y)
+
+
+
+
+
+
+
+
+
